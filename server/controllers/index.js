@@ -13,27 +13,28 @@ var headers = {
 module.exports = {
   messages: {
     get: function (req, res) {
-      fs.readFile("../client/index.html", function(err, data) {
-        if(err) {
-          res.writeHead(404, headers);
-          res.end();
-        } else {
-          res.writeHead(200, headers);
-          res.end(data);
-        }
-      });
     }, // a function which handles a get request for all messages
     post: function (req, res) {
-      
+      if(req.body.message) {
+        models.messages.post(req.body.message, end);
+      }
+      function end() {
+        res.writeHead(201, headers);
+        res.end();
+      }
     } // a function which handles posting a message to the database
   },
 
   users: {
     // Ditto as above
     get: function (req, res) {
-      console.log("get users")
     },
     post: function (req, res) {
+      if(req.body.message) {
+        models.users.post(req.body.username);
+      }
+      res.writeHead(201, headers);
+      res.end();
     }
   }
 };
