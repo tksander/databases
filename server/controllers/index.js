@@ -13,10 +13,17 @@ var headers = {
 module.exports = {
   messages: {
     get: function (req, res) {
+      models.messages.get(end);
+      function end(data) {
+        console.log(data);
+        res.writeHead(201, headers);
+        res.end(data);
+      }
     }, // a function which handles a get request for all messages
     post: function (req, res) {
       if(req.body.message) {
-        models.messages.post(req.body.message, end);
+        req.body.roomname = req.body.roomname || 'Lobby'
+        models.messages.post([req.body.message, req.body.roomname], end);
       }
       function end() {
         res.writeHead(201, headers);
@@ -28,13 +35,20 @@ module.exports = {
   users: {
     // Ditto as above
     get: function (req, res) {
+      models.users.post(req.body.username, end);
+      function end(data) {
+        res.writeHead(201, headers);
+        res.end(data);
+      }
     },
     post: function (req, res) {
-      if(req.body.message) {
-        models.users.post(req.body.username);
+      if(req.body.username) {
+        models.users.post(req.body.username, end);
       }
-      res.writeHead(201, headers);
-      res.end();
+      function end() {
+        res.writeHead(201, headers);
+        res.end();
+      }
     }
   }
 };
