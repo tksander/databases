@@ -9,6 +9,18 @@ if (!/(&|\?)username=/.test(window.location.search)) {
   }
   newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
   window.location.search = newSearch;
+  $.ajax({
+    url: 'http://127.0.0.1:3000/classes/users',
+    type: 'POST',
+    data: JSON.stringify({user: newSearch.slice(9)}),
+    contentType: 'application/json',
+    success: function (data) {
+      // Trigger a fetch to update the messages, pass true to animate
+    },
+    error: function (data) {
+      console.error('chatterbox: Failed to send message');
+    }
+  })
 }
 
 // Put your parse application keys here!
